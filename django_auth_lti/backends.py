@@ -88,16 +88,11 @@ class LTIAuthBackend(ModelBackend):
 
         # if we got this far, the user is good
 
-        user = None
-
-        # Retrieve username from LTI parameter or default to an overridable function return value
-        username = tool_provider.lis_person_sourcedid or self.get_default_username(
-            tool_provider, prefix=self.unknown_user_prefix)
-        username = self.clean_username(username)  # Clean it
-
         email = tool_provider.lis_person_contact_email_primary
         first_name = tool_provider.lis_person_name_given
         last_name = tool_provider.lis_person_name_family
+
+        username = email
 
         logger.info("We have a valid username: %s" % username)
 
