@@ -7,7 +7,7 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name='django-auth-lti',
+    name='django-auth-lti-accolade',
     version='1.2.9',
     packages=['django_auth_lti'],
     include_package_data=True,
@@ -15,7 +15,7 @@ setup(
     description='A simple Django app containing LTI auth middleware and backend.',
     long_description=README,
     url='http://tlt.harvard.edu/',
-    author='Harvard University Teaching and Learning Technologies Program',
+    author='Harvard University Teaching and Learning Technologies Program, Joe Tsindos',
     author_email='tlt-ops@g.harvard.edu',
     classifiers=[
         'Environment :: Web Environment',
