@@ -7,6 +7,8 @@ from collections import OrderedDict
 from django.contrib import auth
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
+from django.http import HttpResponse
+from django.utils.deprecation import MiddlewareMixin
 
 from timer import Timer
 
@@ -16,7 +18,7 @@ from .thread_local import set_current_request
 logger = logging.getLogger(__name__)
 
 
-class MultiLTILaunchAuthMiddleware(object):
+class MultiLTILaunchAuthMiddleware(MiddlewareMixin):
     """
     Middleware for authenticating users via an LTI launch URL.
 
@@ -34,6 +36,9 @@ class MultiLTILaunchAuthMiddleware(object):
     monkey-patching of django's reverse() function (see ./__init__.py) can access
     it in order to retrieve the current resource_link_id.
     """
+    # Added to make middleware compatible with Django 1.10
+    def process_exception(self, request, exception):
+        return HttpResponse("in exception")
 
     def process_request(self, request):
         logger.debug('inside process_request %s' % request.path)
