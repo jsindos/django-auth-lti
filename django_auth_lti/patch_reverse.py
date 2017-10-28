@@ -27,7 +27,7 @@ def reverse(*args, **kwargs):
     exclude_resource_link_id = kwargs.pop('exclude_resource_link_id', False)
 
     url = django_reverse(*args, **kwargs)
-    if not exclude_resource_link_id:
+    if not exclude_resource_link_id and hasattr(request, 'LTI'):
         # Append resource_link_id query param if exclude_resource_link_id kwarg
         # was not passed or is False
         parsed = urlparse(url)
