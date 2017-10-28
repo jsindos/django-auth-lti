@@ -143,7 +143,7 @@ class MultiLTILaunchAuthMiddleware(MiddlewareMixin):
                 launch_redirect_url = LTI_SETUP['LAUNCH_REDIRECT_URL']
                 # Can also include kwargs here to display debugging output in view
                 # See django_app_lti.views.LTILaunchView.hook_get_redirect, line 108
-                return redirect(reverse(launch_redirect_url))
+                return redirect(reverse(launch_redirect_url, kwargs=None))
 
         else:
             resource_link_id = request.GET.get('resource_link_id', None)
