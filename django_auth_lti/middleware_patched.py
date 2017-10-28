@@ -8,6 +8,8 @@ from django.contrib import auth
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
 from django.http import HttpResponse
+from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
 from django.utils.deprecation import MiddlewareMixin
 
 from timer import Timer
@@ -16,7 +18,7 @@ from .thread_local import set_current_request
 
 
 logger = logging.getLogger(__name__)
-
+LTI_SETUP = settings.LTI_SETUP
 
 class MultiLTILaunchAuthMiddleware(MiddlewareMixin):
     """
@@ -137,7 +139,12 @@ class MultiLTILaunchAuthMiddleware(MiddlewareMixin):
                 logger.info("LTI launch added to session: %s", json.dumps(lti_launch, indent=4))
             else:
                 # User could not be authenticated!
-                logger.warning('user could not be authenticated via LTI params; let the request continue in case another auth plugin is configured')
+                logger.warning('user could not be authenticated via LTI params; redirect to launch redirect url')
+                launch_redirect_url = LTI_SETUP['LAUNCH_REDIRECT_URL']
+                # Can also include kwargs here to display debugging output in view
+                # See django_app_lti.views.LTILaunchView.hook_get_redirect, line 108
+                return redirect(reverse(launch_redirect_url))
+
         else:
             resource_link_id = request.GET.get('resource_link_id', None)
 
